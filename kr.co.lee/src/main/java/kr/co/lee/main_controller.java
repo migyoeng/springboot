@@ -17,26 +17,26 @@ import jakarta.servlet.http.HttpServletResponse;
 public class main_controller {
 	
 	@Resource(name="memberdto")	//member_DTO.java => load
-	member_DTO dto;
+	member_DTO mdto;
 	
 	@Autowired
 	private shopping_service ss;	//interface를 최종 호출하는 부분
 	
 	@PostMapping("/joinok.do")
-	public String joinok(@ModelAttribute("join") member_DTO dto, HttpServletResponse res) {
+	public String joinok(@ModelAttribute("join") member_DTO mdto, HttpServletResponse res) {
 		res.setContentType("text/html; charset=utf-8");	//script 한글 깨짐 방지
 		
-		String agree1 = (String)dto.getMagree1();
-		String agree2 = (String)dto.getMagree2();
+		String agree1 = (String)mdto.getMagree1();
+		String agree2 = (String)mdto.getMagree2();
 		//setter에 신규 값을 갱신하는 조건문
 		if(agree1 == null) {
-			dto.setMagree1("N");	//null일 경우 Database enum -> N 강제 입력
+			mdto.setMagree1("N");	//null일 경우 Database enum -> N 강제 입력
 		}
 		if(agree2 == null) {
-			dto.setMagree2("N");	//null일 경우 Database enum -> N 강제 입력
+			mdto.setMagree2("N");	//null일 경우 Database enum -> N 강제 입력
 		}
 		
-		int result = ss.member_join(dto);
+		int result = ss.member_join(mdto);
 		PrintWriter pw = null;
 		try {
 			pw = res.getWriter();

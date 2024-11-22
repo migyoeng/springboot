@@ -11,8 +11,8 @@ public class shopping_serviceImpl implements shopping_service {
 	private shopping_query sq;
 	
 	@Override
-	public int member_join(member_DTO dto) {
-		int result = sq.member_join(dto);	//Controller에서 받은 dto 내용을 mapper로 전달
+	public int member_join(member_DTO mdto) {
+		int result = sq.member_join(mdto);	//Controller에서 받은 dto 내용을 mapper로 전달
 		return result;
 	}
 	

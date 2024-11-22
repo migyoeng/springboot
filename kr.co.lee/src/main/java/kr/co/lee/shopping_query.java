@@ -6,5 +6,5 @@ import org.apache.ibatis.annotations.Mapper;
 public interface shopping_query {
 
 	String search_id(String mid);	//사용자 ID 체크
-	int member_join(member_DTO dto);	//신규 가입 mapper
+	int member_join(member_DTO mdto);	//신규 가입 mapper
 }

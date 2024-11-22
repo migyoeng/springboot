@@ -1,4 +1,3 @@
-
 //ajax로 아이디 체크하는 함수
 function idcheck(){
 	if(f.mid.value == ""){
@@ -27,14 +26,12 @@ function idcheck(){
 				}
 			}
 		}
+		
 		http.open("post", "./idcheck.do", true); //해당 Back-end 경로로 비동기 통신을 사용함
 		http.setRequestHeader("content-type", "application/x-www-form-urlencoded") //POST 전용
 		http.send("mid=" + f.mid.value);
 	}
 }
-
-
-
 
 //회원가입 버튼 클릭시 작동되는 함수
 function member_check(){	
@@ -61,6 +58,7 @@ function member_check(){
 	
 	else if(pw.value == ""){
 		alert("패스워드를 한 번 더 확인해주세요");
+		return false;
 	}
 	
 	else if(f.telcorp.value == ""){
@@ -68,7 +66,7 @@ function member_check(){
 		return false;
 	}
 	
-	else if(f.memail.value == ""){
+	else if(f.memail.value.trim() === ""){
 		alert("이메일을 입력하셔야 합니다.");
 		return false;
 	}
@@ -93,34 +91,29 @@ function member_check(){
 		return false;
 	}
 	
-	else if(f.mpost.value == ""){
-		alert("주소를 입력해주세요");
-		return false;
-	}
-
 	else{
 		//상세 내역을 체크 확인
-		if(f.mpass.value != pw.value){	//신규 조건이 생성됨으로 인해 하단 조건문은 생략됨
+		if(f.mpass.value != pw.value){
 			alert("동일한 패스워드를 입력하셔야 합니다");
 			return false;
 		}
 		
-		if(hp1.value == "" || hp2.value == "" || hp3.value == ""){
-			alert("휴대폰 연락처를 입력하셔야 합니다.");
+		if(hp1 == "" || hp2 == "" || hp3 == ""){
+			alert("휴대폰 연락처를 입력하셔야 합니다");
 			return false;
 		}
 		
-		//세부 조건 생기면 또 추가하기
+		//세부 조건 생기면 추가
 		
 		else {	//최종적으로 Guest 모두 입력이 완료되었을 경우 Back-end로 값을 전송
 			//휴대폰 번호 정보 조합
 			f.mhp.value = hp1.value + "-" + hp2.value + "-" + hp3.value;
-			
 			//f.submit();
 			//return true;
 			return;
 		}
 	}
+
 }
 
 //카카오 도로명 주소
