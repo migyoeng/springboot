@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Spring-Boot + MyBatis Database 연동</title>
+</head>
+<body>
+	<form id="f">
+		제목 : <input type="text" name="subject"><br>
+		내용 : <textarea rows="5" cols="200" name="stext"></textarea><br>
+		<input type="button" value="전송" onclick="gopage()">
+	</form>
+	
+	
+</body>
+
+<script>
+	function gopage(){
+		f.method="post";
+		f.enctype="application/x-www-form-urlencoded";
+		f.action="./sampleok.do";
+		f.submit();
+	}
+</script>
+
+</html>

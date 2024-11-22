@@ -1,0 +1,9 @@
+create table sample(
+	sidx int not null auto_increment,
+	subject varchar(200) not null,
+	stext text not null,
+	sdate timestamp not null default current_timestamp,
+	primary key(sidx)
+);
+
+desc sample;
