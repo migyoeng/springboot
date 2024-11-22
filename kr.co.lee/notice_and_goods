@@ -1,0 +1,24 @@
+create table notice(
+	nidx int not null auto_increment comment '자동증가값',
+	nsubject varchar(200) not null comment '제목',
+	nwriter varchar(100) not null comment '글쓴이',
+	npass varchar(30) not null comment '패스워드',
+	ntext text not null comment '내용',
+	ndate timestamp not null default current_timestamp comment '등록일자',
+	primary key(nidx)
+);
+
+desc notice;
+
+select column_name, column_comment from information_schema.columns where table_schema='shopping' and table_name='notice';
+
+select * from notice;
+
+create table goods(
+gidx int not null auto_increment,
+gname varchar(100) not null,
+gprice int(11) not null,
+gsales int(10) not null,
+gdate timestamp not null default current_timestamp,
+primary key(gidx)
+);
