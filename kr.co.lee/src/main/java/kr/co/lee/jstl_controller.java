@@ -109,6 +109,28 @@ public class jstl_controller {
 		return mv;
 	}
 	
+	/*
+	응용문제 : jstl9.do 로 실행하여 jstl9.jsp 결과값 출력
+		다음 배열의 대한 전체 합계를 출력하는 코드를 작성하시오
+		{100,112,256,241,11,16,39,42,56,118,78}
+		
+		[웹 출력 예시]
+		총 결제 합계 금액 : ??? 원
+	*/
+	@GetMapping("/jstl9.do")
+	public ModelAndView jstl9() {
+		ModelAndView mv = new ModelAndView();
+		Integer[] numbers = new Integer[]{100,112,256,241,11,16,39,42,56,118,78};
+		int sum = 0;
+		for(Integer number : numbers) {
+			sum += number;
+		}
+		mv.addObject("sum", sum);
+		
+		return mv;
+	}
+	
+	
 	
 	
 }
