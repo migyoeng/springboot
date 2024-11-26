@@ -85,7 +85,7 @@
 
       <div class="mb-3">
         <label for="email">이메일</label>
-        <input type="email" name="memail" id="email" class="form-control" placeholder="you@example.com" value="">
+        <input type="email" name="memail" class="form-control" placeholder="you@example.com" value="">
       </div>
 
       <div class="mb-3">
@@ -117,8 +117,8 @@
         <label class="custom-control-label" for="sms">SMS 수신동의</label>
       </div>
       <div class="custom-control custom-checkbox">
-        <input type="checkbox" class="custom-control-input" id="email" name="magree2" value="Y">
-        <label class="custom-control-label" for="email">EMAIL 수신동의</label>
+        <input type="checkbox" class="custom-control-input" id="ck_email" name="magree2" value="Y">
+        <label class="custom-control-label" for="ck_email">EMAIL 수신동의</label>
       </div>
       <hr class="mb-4">
       <button class="btn btn-primary btn-lg btn-block" type="submit">회원가입</button>

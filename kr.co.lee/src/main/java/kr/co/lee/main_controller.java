@@ -1,6 +1,7 @@
 package kr.co.lee;
 
 import java.io.PrintWriter;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,7 +15,7 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
-public class main_controller {
+public class main_controller implements security {
 	
 	@Resource(name="memberdto")	//member_DTO.java => load
 	member_DTO mdto;
@@ -22,8 +23,23 @@ public class main_controller {
 	@Autowired
 	private shopping_service ss;	//interface를 최종 호출하는 부분
 	
+	
+	@PostMapping("/loginok.do")
+	public String loginok(@RequestParam String mid, String mpass) {
+		//Service -> Controller 로 DTO에 값을 이관
+		List<member_DTO> mdto = ss.login_id(mid);
+		
+		if(mdto.size() == 0) {	//만약 해당 DTO에 내용이 없을 경우
+			System.out.println("값 없음");
+		}
+		else {	//사용자의 정보를 출력(해당 아이디가 있을 경우)
+			System.out.println(mdto.get(0).mid);
+		}
+		return null;
+	}
+	
 	@PostMapping("/joinok.do")
-	public String joinok(@ModelAttribute("join") member_DTO mdto, HttpServletResponse res) {
+	public String joinok(@ModelAttribute("join") member_DTO mdto, HttpServletResponse res) throws Exception {
 		res.setContentType("text/html; charset=utf-8");	//script 한글 깨짐 방지
 		
 		String agree1 = (String)mdto.getMagree1();
@@ -36,6 +52,13 @@ public class main_controller {
 			mdto.setMagree2("N");	//null일 경우 Database enum -> N 강제 입력
 		}
 		
+		//정보 저장 전 패스워드 암호화
+		//setter에 사용자가 입력한 패스워드를 getter로 로드한 후 다시 암호화한 값을 setter로 이관
+		String userpw = mdto.getMpass();
+		StringBuilder repass = secode(userpw);	//interface에 있는 암호화된 값을 return
+		mdto.setMpass(repass.toString());	//StringBuilder -> String
+		
+		//회원 가입 정보 저장하는 코드
 		int result = ss.member_join(mdto);
 		PrintWriter pw = null;
 		try {

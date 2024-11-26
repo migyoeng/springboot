@@ -1,5 +1,7 @@
 package kr.co.lee;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,5 +22,11 @@ public class shopping_serviceImpl implements shopping_service {
 	public String search_id(String mid) {	//아이디 중복 체크 메소드
 		String result = sq.search_id(mid);
 		return result;	//Controller에게 결과값을 통보
+	}
+	
+	@Override
+	public List<member_DTO> login_id(String mid) {
+		List<member_DTO> mdto = sq.login_id(mid);
+		return mdto;
 	}
 }

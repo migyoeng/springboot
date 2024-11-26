@@ -5,6 +5,11 @@
 <!-- namespace : JAVA Interface @Mapper 명 -->
 <mapper namespace="kr.co.lee.shopping_query">
 
+<!-- id, passwd, 이름, 이메일 -->
+<select id="login_id" resultType="kr.co.lee.member_DTO">
+	select mid, mpass, mname, memail from member where mid=#{mid}
+</select>
+
 <!-- # : ''로 작성한 데이터, $ : ''를 사용하지 않은 데이터 -->
 <select id="search_id" resultType="String" parameterType="String">
 	select count(*) as cnt from member where mid=#{mid} order by midx desc
