@@ -10,8 +10,10 @@
 <title>상단 페이지</title>
 </head>
 <body>
+<%--
 <p>상단 페이지 (메뉴 부분)</p>
 <%=money %><!-- 표현 방식 -->
 ${menu}<!-- EL 방식(Expression Language) -->
+ --%>
 </body>
 </html>

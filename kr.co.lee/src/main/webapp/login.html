@@ -39,16 +39,28 @@
   <input type="password" name="mpass" class="form-control" placeholder="패스워드를 입력하세요">
   <div class="checkbox mb-3">
     <label>
-      <input type="checkbox" value="remember-me"> 아이디 저장
+      <input type="checkbox" name="idsave" value="Y"> 아이디 저장
     </label>
   </div>
   <button class="btn btn-lg btn-primary btn-block" type="submit">로그인</button>
+  <button class="btn btn-lg btn-warning btn-block" type="button">아이디 및 패스워드 찾기</button>
+  <button class="btn btn-lg btn-info btn-block" type="button" onclick="location.href='./join.jsp'">회원가입</button>
   <p class="mt-5 mb-3 text-muted">&copy; 2024</p>
 </form>
     
   </body>
   
- <script src="./login.js?v=1">
+<script>
+//아이디 저장 체크
+var save_id = window.localStorage.getItem("mid");
+console.log(save_id);
+if(save_id != null){
+	f.mid.value = save_id;
+	f.idsave.checked = true;
+}
+
+</script>
+<script src="./login.js?v=1">
 
 
 </script>

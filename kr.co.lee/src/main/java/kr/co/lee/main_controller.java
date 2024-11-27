@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -12,7 +13,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.annotation.Resource;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class main_controller implements security {
@@ -23,9 +28,33 @@ public class main_controller implements security {
 	@Autowired
 	private shopping_service ss;	//interface를 최종 호출하는 부분
 	
+	PrintWriter pw = null;
+	HttpSession se = null;	//session을 필드에 선언 시 모든 Mapping에서 해당 session 핸들링할 수 있다
+	
+	
+	//장바구니 페이지
+	@GetMapping("/basket.do")
+	public String basket(Model m) {
+		m.addAttribute("id", this.se.getAttribute("id"));
+		m.addAttribute("name", this.se.getAttribute("name"));
+		m.addAttribute("email", this.se.getAttribute("email"));
+		return null;
+	}
+	
+	//메인 페이지
+	@GetMapping("/main.do")
+	public String main(Model m, HttpServletRequest req) {
+		//this.se = req.getSession();	//세션 값
+		//JSTL 활용으로 로그인 정보 출력
+		m.addAttribute("id", this.se.getAttribute("id"));
+		m.addAttribute("name", this.se.getAttribute("name"));
+		m.addAttribute("email", this.se.getAttribute("email"));
+		return null;
+	}
 	
 	@PostMapping("/loginok.do")
-	public String loginok(@RequestParam String mid, String mpass) {
+	public String loginok(@RequestParam String mid, String mpass, String idsave, ServletResponse res, HttpServletRequest req) {
+		res.setContentType("text/html;charset=utf-8");
 		//Service -> Controller 로 DTO에 값을 이관
 		List<member_DTO> mdto = ss.login_id(mid);
 		
@@ -33,7 +62,46 @@ public class main_controller implements security {
 			System.out.println("값 없음");
 		}
 		else {	//사용자의 정보를 출력(해당 아이디가 있을 경우)
-			System.out.println(mdto.get(0).mid);
+			try {
+				this.pw = res.getWriter();
+				StringBuilder repass = secode(mpass);
+				
+				if(mdto.get(0).mpass.equals(repass.toString())) {
+					this.se = req.getSession();
+					se.setAttribute("id", mdto.get(0).mid);
+					se.setAttribute("name", mdto.get(0).mname);
+					se.setAttribute("email", mdto.get(0).memail);
+					//storage까지 등록을 하는 코드
+					if(idsave == null) {
+						this.pw.print("<script>"
+								+ "window.localStorage.removeItem('mid');"
+								+ "</script>");
+					}
+					else {
+						this.pw.print("<script>"
+								+ "window.localStorage.setItem('mid','" + mid + "');"
+								+ "</script>");
+					}
+					
+					this.pw.print("<script>"
+							+ "alert('로그인 되셨습니다.');"
+							+ "location.href='./main.do';"
+							+ "</script>");
+				} else {
+					this.pw.print("<script>"
+							+ "alert('아이디 및 패스워드가 올바르지 않습니다.');"
+							+ "history.go(-1);"
+							+ "</script>");
+				}
+				
+			} catch (Exception e) {
+				this.pw.print("<script>"
+						+ "alert('DB 오류로 인하여 서비스가 올바르지 않습니다.');"
+						+ "history.go(-1);"
+						+ "</script>");
+			} finally {
+				this.pw.close();
+			}
 		}
 		return null;
 	}
