@@ -25,7 +25,7 @@
 			<td>${dbs.nsubject}</td>
 			<td>${dbs.nwriter}</td>
 			<td>${fn:substring(dbs.ndate, 0, 10)}</td>
-			<td><input type="button" value="삭제" onclick="delete_notice('${dbs.nidx}')"></td>
+			<td><input type="button" value="삭제" onclick="delete_notice(${dbs.nidx})"></td>
 		</tr>
 		</cr:forEach>
 	</table>

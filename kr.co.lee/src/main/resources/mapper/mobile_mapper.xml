@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.lee.mobile_mapper">
+
+	<insert id="insert_image" parameterType="kr.co.lee.file_DTO">
+		insert into event values('0', #{mfile_ori}, #{mfile_new}, #{mfile_url}, now())
+	</insert>
+	
+	<!-- 해당 고유값으로 파일명을 가져오는 DDL -->
+	<select id="search_image" parameterType="String">
+		select mfile_new from event where eidx=#{eidx}
+	</select>
+
+	<select id="list_image" resultType="kr.co.lee.file_DTO">
+		select * from event order by eidx desc
+	</select>
+	
+	<delete id="delete_image" parameterType="String">
+		delete from event where eidx=#{eidx}
+	</delete>
+</mapper>
