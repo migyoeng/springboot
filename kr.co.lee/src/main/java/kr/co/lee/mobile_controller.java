@@ -35,9 +35,13 @@ public class mobile_controller {
 	
 	@Autowired
 	mobile_service ms;
+	notice_service ns;
 	
 	@Resource(name="file_DTO")
 	file_DTO fdto;
+	
+	@Resource(name="noticedto")
+	notice_DTO ndto;
 
 	PrintWriter pw = null;	//javascript
 	Date date = null;		//오늘 날짜
@@ -50,6 +54,8 @@ public class mobile_controller {
 	public String excel_uploadok(@RequestPart(value="mfile", required = false) MultipartFile mfile,
 									HttpServletRequest req, HttpServletResponse res) throws Exception {
 		res.setContentType("text/html;charset=utf-8");
+		
+		this.pw = res.getWriter();
 		
 		/* 파일 저장 */
 		//String url = req.getServletContext().getRealPath("/payfile/");
@@ -71,13 +77,69 @@ public class mobile_controller {
 			if(row.getRowNum() > 0) {
 				while(cell.hasNext()) {
 					Cell ce = cell.next();	//cell 값을 가져오는 역할
-					System.out.println(ce.toString());	//Excel 시트에 사용된 내용을 읽어서 출력
+					//System.out.println(ce.toString());	//Excel 시트에 사용된 내용을 읽어서 출력
+					int cellno = ce.getColumnIndex();
+					//System.out.println(cellno);
+					switch(cellno) {
+					case 0:	//제목
+						ndto.setNsubject(ce.toString());
+						break;
+					case 1:	//글쓴이
+						ndto.setNwriter(ce.toString());
+						break;
+					case 2:	//패스워드
+						ndto.setNpass(ce.toString());
+						break;
+					case 3:	//내용
+						ndto.setNtext(ce.toString());
+						break;
+					}
+					
+					/* JDK 17
+					switch(cellno) {
+					case 0 -> System.out.println("0");
+					case 1 -> System.out.println("1");
+					case 2-> System.out.println("2");
+					case 3 -> System.out.println("3");
+					}
+					*/
+					
+					/* JDK 11
+					switch(cellno) {
+					case 0:	//제목
+						break;
+					case 1:	//글쓴이
+						break;
+					case 2:	//패스워드
+						break;
+					case 3:	//내용
+						break;
+					}
+					
+					*/
+				}//while문 종료
+				
+				//DB 저장
+				try {
+					int result = ns.noticein(ndto);
+					if(result > 0) {	//성공된 자료만 카운팅
+						sign = sign + 1;	//+1 카운팅
+					}
+					
+					
+				} catch (Exception e) {	//DB 저장 시 오류
+					this.pw.print(e);
+					this.pw.print("<script>"
+							+ "console.log(" + e + ");"
+							+ "</script>");
 				}
-			}
+			}//while 종료
+			this.pw.print("<script>"
+					+ "alert('해당 Excel 자료가 저장되었으며 총 " + sign + "개의 개수가 저장되었습니다');"
+					+ "history.go(-1);"
+					+ "</script>");
+			this.pw.close();
 		}
-		
-		System.out.println(rows.next());
-		
 		return null;
 	}
 	

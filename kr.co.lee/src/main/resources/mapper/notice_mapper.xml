@@ -3,7 +3,12 @@
 <mapper namespace="kr.co.lee.notice_mapper">
 
 <insert id="notice_insert" parameterType="String">
-insert into notice values('0', #{nsubject}, #{nwriter}, #{npass}, #{ntext}, now())
+	insert into notice values('0', #{nsubject}, #{nwriter}, #{npass}, #{ntext}, now())
+</insert>
+
+<insert id="noticein" parameterType="String">
+	insert into notice(ndix, nsubject, nwriter, npass, ntext, ndate)
+	values ('0', #{nsubject}, #{nwriter}, #{npass}, #{ntext}, now())
 </insert>
 
 </mapper>
